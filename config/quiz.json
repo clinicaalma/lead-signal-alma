@@ -1,0 +1,74 @@
+{
+  "cliente_id": "clinica-alma",
+  "nome_cliente": "Clínica Alma",
+  "nicho": "clínica de estética corporal em Cascavel-PR (gordura localizada e estrias)",
+  "nome_evento_lead": "Lead",
+  "nome_evento_qualificado": "LeadQualificado",
+  "nota_de_corte": 60,
+  "ordem": ["incomodo", "regiao", "tentou", "quando", "investimento", "periodo"],
+  "perguntas": [
+    {
+      "id": "incomodo",
+      "rotulo": "O que me incomoda",
+      "texto": "O que mais te incomoda hoje?",
+      "opcoes": [
+        { "label": "Gordurinha localizada (barriga, flanco, costas, braço)", "pontos": 10 },
+        { "label": "Estrias", "pontos": 10 },
+        { "label": "Os dois", "pontos": 15 }
+      ]
+    },
+    {
+      "id": "tentou",
+      "rotulo": "Já tentei",
+      "texto": "O que você já tentou para resolver?",
+      "opcoes": [
+        { "label": "Pacote em outra clínica", "pontos": 20 },
+        { "label": "Dieta ou academia", "pontos": 15 },
+        { "label": "Cremes e tratamentos em casa", "pontos": 10 },
+        { "label": "Nada ainda", "pontos": 5 }
+      ]
+    },
+    {
+      "id": "quando",
+      "rotulo": "Quero começar",
+      "texto": "Quando você quer começar?",
+      "opcoes": [
+        { "label": "Esta semana", "pontos": 30 },
+        { "label": "Este mês", "pontos": 25 },
+        { "label": "Tenho uma data (verão, viagem, evento)", "pontos": 25 },
+        { "label": "Só estou pesquisando", "pontos": 0 }
+      ]
+    },
+    {
+      "id": "periodo",
+      "rotulo": "Melhor período",
+      "texto": "Qual período fica melhor para sua avaliação?",
+      "opcoes": [
+        { "label": "Manhã", "pontos": 0 },
+        { "label": "Tarde", "pontos": 0 },
+        { "label": "Sábado", "pontos": 0 }
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "id": "regiao",
+      "rotulo": "Região",
+      "texto": "Você mora em Cascavel ou região?",
+      "opcoes": [
+        { "label": "Sim", "aprova": true },
+        { "label": "Não", "aprova": false }
+      ]
+    },
+    {
+      "id": "investimento",
+      "rotulo": "Investimento",
+      "texto": "Os protocolos vão de R$ 399 a R$ 2.900, com desconto no Pix ou em até 10x no cartão. Isso faz sentido para você agora?",
+      "opcoes": [
+        { "label": "Sim, quero agendar minha avaliação", "pontos": 35, "aprova": true },
+        { "label": "Sim, se tiver parcelamento", "pontos": 30, "aprova": true },
+        { "label": "Agora não", "pontos": 0, "aprova": false }
+      ]
+    }
+  ]
+}
