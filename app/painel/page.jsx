@@ -148,6 +148,7 @@ export default function Crm() {
           <p className="sub">Leads do quiz, do primeiro contato ao retorno/manutenção.</p>
         </div>
         <div className="painel-acoes">
+          <a className="botao-sec" href="/painel/black" style={{ textDecoration: "none" }}>Black Alma →</a>
           <button className="botao-sec" onClick={() => carregar()}>{carregando ? "Atualizando..." : "Atualizar"}</button>
           <button className="botao-sec" onClick={() => baixarCsv(filtrados)}>Baixar planilha</button>
         </div>

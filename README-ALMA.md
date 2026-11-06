@@ -89,3 +89,47 @@ Depois: **apague `META_TEST_EVENT_CODE`** e faça um novo deploy. Se ficar ligad
 - Objetivo **Leads**, local da conversão **Site**, URL = link do quiz com os parâmetros acima.
 - Comece otimizando para `LeadQualificado` (conversão personalizada). A meta "Maximizar o número de leads qualificados" costuma liberar depois de alguns dias de eventos reais chegando pelo servidor.
 - Revise pesos e corte a cada 2 a 4 semanas, com o que a Kamilla e a Nicoly estão vendo no WhatsApp.
+
+## Black Alma (captação do grupo VIP)
+
+Página `/black` com contagem regressiva e um botão "Entrar no grupo VIP". Não tem formulário. O objetivo é levar gente para o grupo antes da divulgação das ofertas. O quiz, o CRM e os eventos Lead, LeadQualificado e Purchase não mudam.
+
+- **Página:** `https://clinicaalma-ads.netlify.app/black`
+- **Painel:** `https://clinicaalma-ads.netlify.app/painel/black`, com a mesma senha do CRM (também tem um link no topo do CRM).
+
+### Eventos
+
+- **PageView** ao abrir, pelo Pixel do `app/layout.jsx`.
+- **Contact** ao clicar no botão: vai pelo Pixel e pela Conversions API com o mesmo `event_id`, para deduplicar, e `content_name: "Grupo VIP Black Alma"`. Nessa página não há Lead, LeadQualificado nem CompleteRegistration.
+- O grupo abre em 250 ms. A gravação do clique e a CAPI vão por `sendBeacon`/`keepalive` e nunca seguram o redirecionamento.
+
+### Supabase
+
+**SQL Editor** → cole todo o `supabase/black.sql` → **Run**. Ele cria `black_visitas`, `black_cliques`, `black_grupo_snapshots` e a função `black_resumo()`, que o painel usa. O RLS segue o mesmo padrão: só o servidor lê e grava. Pode rodar de novo sem problema.
+
+### Variáveis (Netlify)
+
+| Variável | O que é |
+| --- | --- |
+| `BLACK_GRUPO_LINK` | Link de convite do grupo (`https://chat.whatsapp.com/...`) |
+| `BLACK_ABERTURA` | Data e hora da divulgação, ex.: `2026-11-09T19:00:00-03:00`. Quando chega, a contagem vira "As ofertas já estão no grupo. Entre agora." |
+| `EVOLUTION_API_URL`, `EVOLUTION_API_KEY`, `EVOLUTION_INSTANCE`, `BLACK_GRUPO_JID` | Opcionais. Com as quatro, a função `netlify/functions/black-membros.mjs` conta os membros do grupo a cada 30 min. Sem elas, o painel mostra o campo "Membros no grupo agora" para digitar |
+
+Reaproveita `META_PIXEL_ID`, `META_CAPI_TOKEN`, `META_TEST_EVENT_CODE`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` e `PAINEL_SENHA`.
+
+### Anúncios
+
+Em **Parâmetros de URL**:
+
+```
+utm_source=meta&utm_campaign={{campaign.name}}&utm_content={{ad.name}}
+```
+
+Link: `https://clinicaalma-ads.netlify.app/black?utm_source=meta&utm_campaign={{campaign.name}}&utm_content={{ad.name}}`. Para otimizar, crie uma conversão personalizada com o evento **Contact**.
+
+### Checklist de testes (depois do deploy)
+
+1. [ ] Abrir `/black?utm_content=teste`: a visita aparece no painel com a origem "teste".
+2. [ ] Clicar no botão: o grupo abre em menos de 1 segundo e o clique aparece no painel.
+3. [ ] Com `META_TEST_EVENT_CODE`: o `Contact` aparece no Testar eventos como Navegador e Servidor, deduplicado.
+4. [ ] Salvar um número de membros manual: o card e o gráfico atualizam.
