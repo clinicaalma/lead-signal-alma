@@ -11,7 +11,11 @@ export const metadata = {
   robots: { index: false },
 };
 
-export const viewport = { width: "device-width", initialScale: 1, themeColor: "#2D1910" };
+// Lê META_PIXEL_ID e WHATSAPP_NUMERO a cada acesso (e não só no build),
+// para uma variável trocada na Netlify valer sem depender da ordem do deploy.
+export const dynamic = "force-dynamic";
+
+export const viewport ={ width: "device-width", initialScale: 1, themeColor: "#2D1910" };
 
 const pixelId = process.env.META_PIXEL_ID || "";
 
